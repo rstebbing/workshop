@@ -1,0 +1,5 @@
+/data/
+/opt/
+
+*.pyc
+/py/src/workshop.egg-info/
