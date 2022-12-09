@@ -50,7 +50,7 @@ Commands to reproduce the included figures are included inline within each docum
 python -m workshop.experiments.transformer_sequence_classification all
 ```
 
-The model training, evaluation, and visualization steps are all cached to disk too, so that it re-running the above command a second time is fast. Adding a new experiment can be done by appending a new `RunSpec` entry to `RUN_SPECS` in [main.py` ⧉](https://github.com/rstebbing/workshop/blob/f51f3c5faec811846800b48f0bc72a8d25f5f589/py/src/workshop/experiments/transformer_sequence_classification/main.py#L48).
+The model training, evaluation, and visualization steps are all cached to disk too, so that it re-running the above command a second time is fast. Adding a new experiment can be done by appending a new `RunSpec` entry to `RUN_SPECS` in [main.py ⧉](https://github.com/rstebbing/workshop/blob/f51f3c5faec811846800b48f0bc72a8d25f5f589/py/src/workshop/experiments/transformer_sequence_classification/main.py#L48).
 
 ## Conclusions
 
