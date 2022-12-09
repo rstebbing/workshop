@@ -1,4 +1,12 @@
 #!/bin/bash
+##########################################
+# File: prepare_figures.sh               #
+# Copyright Richard Stebbing 2022.       #
+# Distributed under the MIT License.     #
+# (See accompany file LICENSE or copy at #
+#  http://opensource.org/licenses/MIT)   #
+##########################################
+
 
 set -euxo pipefail
 
