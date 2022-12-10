@@ -41,7 +41,7 @@ This report is split across multiple documents which are best read consecutively
 1. [High-Level Walkthrough ⧉](01-high-level-walkthrough.md) details what occurs when two example strings `"aac"` and `"baac"` are processed by the sequence classifier. This document details how the input strings are tokenized, how the tokens are mapped to embeddings, how the embeddings are transformed by the Transformer Block, and how the transformed embeddings are processed to generate output logits that indicate whether or not the sequence contains `"a"` *and* `"b"`.
 2. [`self_attention_block` Walkthrough ⧉](02-self-attention-block-walkthrough.md) details *how* the embeddings are transformed within the instance of the [`SelfAttentionBlock` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L215). Specific attention (pun intended) is given to how the attention keys, queries, and values are constructed for the example strings.
 3. [Generalization Errors ⧉](03-generalization-errors.md) examines example errors—both false positives and false negatives—and details why they occur within the Transformer Block.
-4. [Improving Generalization ⧉](04-improving-generalization.md) examines strategies for improving generalization of the model. This document is focuses primarily on dataset construction, initialization strategies, and model dimensionality.
+4. [Improving Generalization ⧉](04-improving-generalization.md) examines strategies for improving generalization of the model. This document focuses primarily on dataset construction, initialization strategies, and model dimensionality.
 
 ## Reproducibility
 
