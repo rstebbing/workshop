@@ -45,10 +45,11 @@ This report is split across multiple documents which are best read consecutively
 
 ## Reproducibility
 
-Commands to reproduce the included figures are included inline within each document. All experiments and figures can be generated via a single command too:
+Commands to reproduce the included figures are included inline within each document. All experiments can be run via the single command:
 ``` bash
-python -m workshop.experiments.transformer_sequence_classification all
+python -m workshop.experiments.transformer_sequence_classification all --no-visualize > /dev/null
 ```
+This takes approximately 10 minutes on an M1 Max. All figures can be generated too by omitting `--no-visualize`.
 
 The model training, evaluation, and visualization steps are all cached to disk too, so that it re-running the above command a second time is fast. Adding a new experiment can be done by appending a new `RunSpec` entry to `RUN_SPECS` in [main.py ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/main.py#L56).
 
