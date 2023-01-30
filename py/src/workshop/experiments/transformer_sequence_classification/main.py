@@ -21,7 +21,7 @@ from functools import cached_property
 from pathlib import Path
 
 import numpy as np
-from devtools import debug
+from devtools import debug, sformat
 
 from workshop.ext import pydantic as p
 
@@ -168,9 +168,13 @@ def main_all(args):
             "run", run_spec.name,
             "--directory", args.directory,
         ]
+        if args.no_visualize:
+            command.extend([
+                "--no-visualize",
+            ])
         # fmt: on
 
-        exec_main(command, verbose=args.verbose, force=args.force)
+        exec_main(command, verbose=args.verbose, force=args.force, bold=True)
 
 
 def main_run(args):
@@ -260,23 +264,27 @@ def main_run(args):
             command.extend([
                 "--directory", d,
                 "--max-num-incorrect-strings", 10,
-                "--visualize",
-                "--figures-directory", figures_directory_,
             ])
 
-            if individual_figures:
+            if not args.no_visualize:
                 command.extend([
-                    "--individual-figures",
-                    "--include-transformed-embeddings",
+                    "--visualize",
+                    "--figures-directory", figures_directory_,
                 ])
-                if epoch is not None:
+
+                if individual_figures:
                     command.extend([
-                        "--epoch", epoch,
+                        "--individual-figures",
+                        "--include-transformed-embeddings",
                     ])
-            else:
-                command.extend([
-                    "--epoch", -1,
-                ])
+                    if epoch is not None:
+                        command.extend([
+                            "--epoch", epoch,
+                        ])
+                else:
+                    command.extend([
+                        "--epoch", -1,
+                    ])
             # fmt: on
 
             exec_main(command, verbose=args.verbose, force=args.force)
@@ -474,7 +482,7 @@ def add_experiment_arguments(parser: argparse.ArgumentParser):
 _PACKAGE = sys.modules[__name__].__package__
 
 
-def exec_main(command, *, verbose=True, force=False):
+def exec_main(command, *, verbose=True, force=False, bold=False):
     main_argv = []
     if not verbose:
         main_argv.append("--quiet")
@@ -483,7 +491,11 @@ def exec_main(command, *, verbose=True, force=False):
 
     main_argv.extend([str(x) for x in command if x is not None])
 
-    print(f"+ {shlex.join(['python', '-m', _PACKAGE] + main_argv)}", file=sys.stderr, flush=True)
+    styles = []
+    if bold:
+        styles.extend([sformat.blue, sformat.bold])
+
+    print(sformat(f"+ {shlex.join(['python', '-m', _PACKAGE] + main_argv)}", *styles), file=sys.stderr, flush=True)
 
     main(main_argv)
 
@@ -504,11 +516,13 @@ def main(argv=None):
 
     parser_all = subparsers.add_parser("all")
     parser_all.add_argument("-d", "--directory", type=Path, default=DEFAULT_DIRECTORY)
+    parser_all.add_argument("-nv", "--no-visualize", action="store_true")
     parser_all.set_defaults(main=main_all)
 
     parser_run = subparsers.add_parser("run")
     parser_run.add_argument("name", choices=RUN_SPEC_NAMES)
     parser_run.add_argument("-d", "--directory", type=Path, default=DEFAULT_DIRECTORY)
+    parser_run.add_argument("-nv", "--no-visualize", action="store_true")
     parser_run.set_defaults(main=main_run)
 
     parser_init = subparsers.add_parser("init")
