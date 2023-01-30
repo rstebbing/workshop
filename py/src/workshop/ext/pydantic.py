@@ -104,8 +104,12 @@ else:
         strict = True
 
 
+Field = _.Field
+
 validator = _.validator
 ValidationError = _.ValidationError
+
+validate_arguments = _.validate_arguments
 
 FilePath = _.FilePath
 DirectoryPath = _.DirectoryPath
@@ -134,7 +138,7 @@ class ModelMetaclass(pm.ModelMetaclass):
                 if name_ not in include_fields:
                     assert field.field_info.include is None
 
-                    include = _default_include_fields(field.type_)
+                    include = _default_include_fields(field.annotation)
                     include_fields[name_] = include
 
             if include_fields:
@@ -143,10 +147,39 @@ class ModelMetaclass(pm.ModelMetaclass):
         return cls
 
 
+NoneType = type(None)
+
+
 _DEFAULT_INCLUDE_FIELDS = {}
 
 
 def _default_include_fields(cls):
+    origin = t.get_origin(cls)
+    if origin is t.Union:
+        args = t.get_args(cls)
+        if args is None:
+            raise NotImplementedError(f"unsupported empty args\n{cls = }")
+
+        try:
+            i = args.index(NoneType)
+        except ValueError:
+            pass
+        else:
+            args = args[:i] + args[i + 1 :]
+
+        include_fields_ = [_default_include_fields(arg) for arg in args]
+
+        if len(include_fields_) > 1:
+            if all(x == include_fields_[0] for x in include_fields_[1:]):
+                include_fields_ = include_fields_[:1]
+
+        if len(include_fields_) != 1:
+            raise NotImplementedError(f"unsupported union annotation\n{cls = }\n{args = }")
+
+        include_fields = include_fields_[0]
+
+        return include_fields
+
     if not _issubclass_base_model(cls):
         return {}
 
@@ -154,7 +187,7 @@ def _default_include_fields(cls):
     if include_fields is None:
         include_fields = {}
         for name, field in cls.__fields__.items():
-            include = _default_include_fields(field.type_)
+            include = _default_include_fields(field.annotation)
             include_fields[name] = include
 
         _DEFAULT_INCLUDE_FIELDS[cls] = include_fields
@@ -211,10 +244,23 @@ def _maybe_decode_torch_tensor(v: t.Any) -> t.Optional[torch.Tensor]:
 
 class BaseModel(_.BaseModel, metaclass=ModelMetaclass):
     class Config:
+        # Reference:
+        # https://docs.pydantic.dev/usage/model_config/
         extra = "forbid"
+
         keep_untouched = (cached_property,)
+
         validate_assignment = True
         validate_all = True
+
+        # Models are *not* copied on validation. This avoids bugs related
+        # to lifecycle management which rely on models having one or more
+        # references.
+        #
+        # Reference:
+        # https://github.com/pydantic/pydantic/pull/4093
+        copy_on_model_validation = "none"
+
         json_encoders = {
             torch.Tensor: _torch_tensor_json_encoder,
         }
@@ -230,13 +276,18 @@ class BaseModel(_.BaseModel, metaclass=ModelMetaclass):
     def apply_overrides(self, overrides: _Overrides = None):
         apply_model_overrides(self, overrides)
 
-    def dump_json(self, path: t.Union[str, Path], *, indent: int = 2, include=None, **kwargs):
-        dump_json(self, path, indent=indent, include=include, **kwargs)
+    def json(self, *, indent: int = 2, exclude_none: bool = True, include=None, **kwargs) -> str:
+        s = super().json(indent=indent, exclude_none=exclude_none, include=include, **kwargs)
+
+        return s
+
+    def dump_json(self, path: t.Union[str, Path], **kwargs):
+        dump_json(self, path, **kwargs)
 
 
-def dump_json(model: _.BaseModel, path: t.Union[str, Path], *, indent: int = 2, **kwargs):
+def dump_json(model: _.BaseModel, path: t.Union[str, Path], *, indent: int = 2, exclude_none: bool = True, **kwargs):
     with Path(path).open("w") as f:
-        f.write(model.json(indent=indent, **kwargs))
+        f.write(model.json(indent=indent, exclude_none=exclude_none, **kwargs))
         f.write("\n")
 
 
@@ -485,3 +536,8 @@ def maybe_get_ref(schema):
             ref = all_of[0]["$ref"]
 
     return ref
+
+
+class ArbitraryTypesModel(BaseModel):
+    class Config:
+        arbitrary_types_allowed = True
