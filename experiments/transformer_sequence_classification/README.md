@@ -24,7 +24,7 @@ both of which operate on (layer) normalized inputs and are combined with residua
 
 Large Transformer models are incredibly exciting, but the high model dimensionality, large number of layers, and complexity of preprocessing (e.g. tokenization algorithms) and postprocessing make them non-ideal for gaining simple intuitions about the internals of the Transformer Block.
 
-The goal of the set of experiments in this repository is to help build intuitions about the internals of the Transformer Block by probing a simple single-layer sequence classifier. The report is not intended to be an introduction to attention etc., but *is* intended to be a complement to introductory guides like Jay Alammar's excellent [The Illustrated Transformer ⧉](https://jalammar.github.io/illustrated-transformer/).
+The goal of the set of experiments in this repository is to help build intuitions about the internals of the Transformer Block by probing a simple single-layer sequence classifier. The report is not intended to be an introduction to attention etc., but *is* intended to be a complement to introductory guides like Jay Alammar's excellent [The Illustrated Transformer ⧉](https://jalammar.github.io/illustrated-transformer/) and other expositions with toy problems like Anthropic's [Toy Models of Superposition ⧉](https://transformer-circuits.pub/2022/toy_model/index.html).
 
 ## Problem Statement
 
