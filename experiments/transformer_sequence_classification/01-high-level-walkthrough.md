@@ -45,14 +45,14 @@ additionally evaluates and visualizes `"a"`, `"b"`, `"ab"`, and `"ab{100}"` (whi
 
 ## The `token_ids`
 
-Evaluation ([`Experiment.eval_` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/experiment.py#L393)) begins by encoding each input string into a sequence of integers that are represented by a single [`token_ids` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/experiment.py#L394-L410) tensor. In more detail:
+Evaluation ([`Experiment.eval_` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/experiment.py#L401)) begins by encoding each input string into a sequence of integers that are represented by a single [`token_ids` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/experiment.py#L402-L418) tensor. In more detail:
 
 1. Start with two `strings`:
    ``` python
    "aac"
    "baac"
    ```
-2. In [`Tokenizer.encode` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/tokenizer.py#L108) each string is split into individual characters (*tokens*) and an extra classification token (`"CLS"`) is prepended to each sequence:
+2. In [`Tokenizer.encode` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/tokenizer.py#L116) each string is split into individual characters (*tokens*) and an extra classification token (`"CLS"`) is prepended to each sequence:
    ``` python
    ["CLS", "a", "a", "c"]
    ["CLS", "b", "a", "a", "c"]
@@ -63,7 +63,7 @@ Evaluation ([`Experiment.eval_` ⧉](https://github.com/rstebbing/workshop/blob
    [0, 2, 2, 4]
    [0, 3, 2, 2, 4]
    ```
-4. In [`validate_token_ids` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/tokenizer.py#L181) the two sequences are combined into a single tensor of shape
+4. In [`validate_token_ids` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/tokenizer.py#L189) the two sequences are combined into a single tensor of shape
    ``` python
    (num_sequences, max_sequence_length) == (2, 5)
    ```
@@ -77,7 +77,7 @@ The `token_ids` are the one and only argument provided to the model.
 
 ## The `embeddings`
 
-The first step in the forward pass ([`Model.forward` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L126)) is to build the [`embeddings` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L133-L134) tensor of shape
+The first step in the forward pass ([`Model.forward` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L135)) is to build the [`embeddings` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L142-L143) tensor of shape
 
 ``` python
 (num_sequences, max_sequence_length, hidden_size) == (2, 5, 2)
@@ -119,7 +119,7 @@ In short:
 
 ## The `transformed_embeddings`
 
-The second step in the forward pass is to transform the `embeddings` tensor via the `self_attention_block` module (the Transformer Block) to produce the [`transformed_embeddings` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L145-L149) tensor of identical shape:
+The second step in the forward pass is to transform the `embeddings` tensor via the `self_attention_block` module (the Transformer Block) to produce the [`transformed_embeddings` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L160-164) tensor of identical shape:
 ``` python
 self_attention_block_result: SelfAttentionBlockResult = self.self_attention_block(
     embeddings, pairwise_attention_mask

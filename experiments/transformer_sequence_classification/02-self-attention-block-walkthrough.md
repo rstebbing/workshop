@@ -9,7 +9,7 @@ Table of Contents
 
 ## Introduction
 
-The first step in `self_attention_block`, an instance of [`SelfAttentionBlock` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L215), is the application of attention to the `normalized_hidden_states` (i.e. the *normalized* `transformed_embeddings`) which is then added to the input `hidden_states` (`transformed_embeddings`):
+The first step in `self_attention_block`, an instance of [`SelfAttentionBlock` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L230), is the application of attention to the `normalized_hidden_states` (i.e. the *normalized* `transformed_embeddings`) which is then added to the input `hidden_states` (`transformed_embeddings`):
 
 ``` python
 attention_result: AttentionResult = self.attention(normalized_hidden_states, attention_mask)
@@ -23,7 +23,7 @@ To make this walkthrough simpler, no layer normalization is done so that `attent
 
 ## `attention`
 
-1. The first step in `attention` is to compute the [`attention_weights` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L358-L382), a 4D tensor of shape
+1. The first step in `attention` is to compute the [`attention_weights` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L371-L395), a 4D tensor of shape
    ``` python
    (num_sequences, num_attention_heads, max_sequence_length, max_sequence_length) == (2, 2, 5, 5)
    ```

@@ -39,7 +39,7 @@ This problem is useful because it is amenable to a small number of attention hea
 This report is split across multiple documents which are best read consecutively. The documents are:
 
 1. [High-Level Walkthrough ⧉](01-high-level-walkthrough.md) details what occurs when two example strings `"aac"` and `"baac"` are processed by the sequence classifier. This document details how the input strings are tokenized, how the tokens are mapped to embeddings, how the embeddings are transformed by the Transformer Block, and how the transformed embeddings are processed to generate output logits that indicate whether or not the sequence contains `"a"` *and* `"b"`.
-2. [`self_attention_block` Walkthrough ⧉](02-self-attention-block-walkthrough.md) details *how* the embeddings are transformed within the instance of the [`SelfAttentionBlock` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L215). Specific attention (pun intended) is given to how the attention keys, queries, and values are constructed for the example strings.
+2. [`self_attention_block` Walkthrough ⧉](02-self-attention-block-walkthrough.md) details *how* the embeddings are transformed within the instance of the [`SelfAttentionBlock` ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/model.py#L230). Specific attention (pun intended) is given to how the attention keys, queries, and values are constructed for the example strings.
 3. [Generalization Errors ⧉](03-generalization-errors.md) examines example errors—both false positives and false negatives—and details why they occur within the Transformer Block.
 4. [Improving Generalization ⧉](04-improving-generalization.md) examines strategies for improving generalization of the model. This document focuses primarily on dataset construction, initialization strategies, and model dimensionality.
 
@@ -50,7 +50,7 @@ Commands to reproduce the included figures are included inline within each docum
 python -m workshop.experiments.transformer_sequence_classification all
 ```
 
-The model training, evaluation, and visualization steps are all cached to disk too, so that it re-running the above command a second time is fast. Adding a new experiment can be done by appending a new `RunSpec` entry to `RUN_SPECS` in [main.py ⧉](https://github.com/rstebbing/workshop/blob/f51f3c5faec811846800b48f0bc72a8d25f5f589/py/src/workshop/experiments/transformer_sequence_classification/main.py#L48).
+The model training, evaluation, and visualization steps are all cached to disk too, so that it re-running the above command a second time is fast. Adding a new experiment can be done by appending a new `RunSpec` entry to `RUN_SPECS` in [main.py ⧉](https://github.com/rstebbing/workshop/blob/5b6dff53d8adc4c83707f8da80fc2c2b08f08c76/py/src/workshop/experiments/transformer_sequence_classification/main.py#L56).
 
 ## Conclusions
 
