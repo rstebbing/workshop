@@ -88,3 +88,7 @@ python -m workshop.experiments.transformer_sequence_classification.main \
 ```
 
 A model is suceptible to false negatives if the difference in attention scores between a target token (e.g. `"a"`) and other tokens (e.g. `"b"`) is too small so that large numbers of the latter can overwhelm the former.
+
+---
+
+Next: [Improving Generalization ⧉](04-improving-generalization.md), Previous: [`self_attention_block` Walkthrough ⧉](02-self-attention-block-walkthrough.md), Up: [Transformer Sequence Classification ⧉](.)

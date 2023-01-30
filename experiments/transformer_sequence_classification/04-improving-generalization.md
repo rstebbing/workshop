@@ -416,3 +416,7 @@ To summarize: increasing `hidden_size` and `num_attention_heads` results in more
 Increasing the number of parameters can help training converge in fewer epochs to a more-general model ([Initialization and Dimensionality](#initialization-and-dimensionality)) but the down-side is a larger model that is more expensive to evaluate. Assuming this extra model capacity is *not* wanted, what can be done about this?
 
 *Pruning* is the procedure of reducing the number of parameters in a neural network, during and/or after training. The high-level idea is to remove redundant parts of the network, like redundant dimensions in embeddings—as purposefully introduced *and* observed in in [Increase `hidden_size`](#increase-hidden_size)—or redundant attention heads—as introduced in [Increase `num_attention_heads`](#increase-num_attention_heads). This experiment will be extended in future to demonstrate pruning techniques, including identifying and pruning redundant heads as explained in [Are Sixteen Heads Really Better than One? ⧉](https://arxiv.org/abs/1905.10650) and demonstrated on BERT in [run_bertology.py ⧉](https://github.com/huggingface/transformers/blob/main/examples/research_projects/bertology/run_bertology.py).
+
+---
+
+Previous: [Generalization Errors ⧉](03-generalization-errors.md), Up: [Transformer Sequence Classification ⧉](.)

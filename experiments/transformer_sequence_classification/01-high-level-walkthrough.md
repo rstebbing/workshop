@@ -166,3 +166,7 @@ In short, for each sequence:
 3. The output logit is positive (indicating a final output of `1`) if its transformed `"CLS"` token is in the direction pointed to by the `binary_linear` classifier and negative (indicating a final output of `0`) otherwise.
 
 So what *is* going on inside `self_attention_block`?
+
+---
+
+Next: [`self_attention_block` Walkthrough ⧉](02-self-attention-block-walkthrough.md), Up: [Transformer Sequence Classification ⧉](.)

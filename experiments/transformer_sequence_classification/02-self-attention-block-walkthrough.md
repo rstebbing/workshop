@@ -136,3 +136,7 @@ The `output` is added back to the updated `hidden_states` and gives the final tr
 <p align="center">
   <img src="https://github.com/rstebbing/workshop/blob/main/experiments/transformer_sequence_classification/figures/walkthrough/8-15.png" width=80% alt="walkthrough cls_feed_forward_output_hidden_states"/>
 </p>
+
+---
+
+Next: [Generalization Errors ⧉](03-generalization-errors.md), Previous: [High-Level Walkthrough ⧉](01-high-level-walkthrough.md), Up: [Transformer Sequence Classification ⧉](.)
